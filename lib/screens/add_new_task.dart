@@ -3,10 +3,23 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:todo_app/constants/color.dart';
+import 'package:todo_app/constants/tasktype.dart';
+import 'package:todo_app/model/task.dart';
 
-class AddNewTaskScreen extends StatelessWidget {
-  const AddNewTaskScreen({Key? key}) : super(key: key);
+class AddNewTaskScreen extends StatefulWidget {
+  const AddNewTaskScreen({Key? key, required this.addNewTask});
+  //Passing function as parameter
+  final void Function(Task newTask) addNewTask;
+  @override
+  State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
+}
 
+class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TaskType tasktype = TaskType.note;
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -14,9 +27,10 @@ class AddNewTaskScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-          backgroundColor: HexColor(backgroundColor),
+        backgroundColor: HexColor(backgroundColor),
 //          appBar: AppBar(),
-          body: Column(
+        body: SingleChildScrollView(
+          child: Column(
             children: [
               Container(
                 width: deviceWidth,
@@ -46,15 +60,124 @@ class AddNewTaskScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const Text("Task Title"),
               const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: TextField(
-                    decoration:
-                        InputDecoration(filled: true, fillColor: Colors.white),
-                  ))
+                  padding: EdgeInsets.only(top: 20), child: Text("Task Title")),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                child: TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                      filled: true, fillColor: Colors.white),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text("Category"),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                duration: Duration(milliseconds: 3000),
+                                content: Text("Category Seelcted")));
+                        setState(() {
+                          tasktype = TaskType.note;
+                        });
+                      },
+                      child: Image.asset("lib/assets/Category.png"),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                duration: Duration(milliseconds: 3000),
+                                content: Text("Category Seelcted")));
+                        setState(() {
+                          tasktype = TaskType.calendar;
+                        });
+                      },
+                      child: Image.asset("lib/assets/Category2.png"),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                duration: Duration(milliseconds: 3000),
+                                content: Text("Category Seelcted")));
+                        setState(() {
+                          tasktype = TaskType.contest;
+                        });
+                      },
+                      child: Image.asset("lib/assets/Category3.png"),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Text("Date"),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              controller: dateController,
+                              decoration: const InputDecoration(
+                                  filled: true, fillColor: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Text("Time"),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              controller: timeController,
+                              decoration: const InputDecoration(
+                                  filled: true, fillColor: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Text("Notes"),
+              SizedBox(
+                height: 300,
+                child: TextField(
+                  controller: descriptionController,
+                  expands: true,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                      filled: true, fillColor: Colors.white),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Task newtask = Task(
+                        type: tasktype,
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        isCompleted: false);
+                    widget.addNewTask(newtask);
+                  },
+                  child: const Text("Save")),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
