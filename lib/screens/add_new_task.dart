@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:todo_app/constants/color.dart';
@@ -8,8 +6,9 @@ import 'package:todo_app/model/task.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({Key? key, required this.addNewTask});
-  //Passing function as parameter
   final void Function(Task newTask) addNewTask;
+  // Passing function as parameter
+
   @override
   State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
 }
@@ -19,23 +18,29 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TaskType tasktype = TaskType.note;
+
+  TaskType taskType = TaskType.note;
+
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: HexColor(backgroundColor),
-//          appBar: AppBar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 width: deviceWidth,
                 height: deviceHeight / 10,
-                color: Colors.purple,
+                decoration: const BoxDecoration(
+                  color: Colors.purple,
+                  image: DecorationImage(
+                      image: AssetImage(
+                          "lib/assets/images/add_new_task_header.png"),
+                      fit: BoxFit.cover),
+                ),
                 child: Row(
                   children: [
                     IconButton(
@@ -49,26 +54,28 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                       ),
                     ),
                     const Expanded(
-                        child: Text(
-                      "Add new task ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 21),
-                      textAlign: TextAlign.center,
-                    ))
+                      child: Text(
+                        "Add new task",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 21),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   ],
                 ),
               ),
               const Padding(
-                  padding: EdgeInsets.only(top: 20), child: Text("Task Title")),
+                  padding: EdgeInsets.only(top: 10), child: Text("Task title")),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextField(
                   controller: titleController,
                   decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.white),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
                 ),
               ),
               Padding(
@@ -80,44 +87,50 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                     GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                duration: Duration(milliseconds: 3000),
-                                content: Text("Category Seelcted")));
+                          const SnackBar(
+                            duration: Duration(milliseconds: 300),
+                            content: Text("Category selected"),
+                          ),
+                        );
                         setState(() {
-                          tasktype = TaskType.note;
+                          taskType = TaskType.note;
                         });
                       },
-                      child: Image.asset("lib/assets/Category.png"),
+                      child: Image.asset("lib/assets/images/category_1.png"),
                     ),
                     GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                duration: Duration(milliseconds: 3000),
-                                content: Text("Category Seelcted")));
+                          const SnackBar(
+                            duration: Duration(milliseconds: 300),
+                            content: Text("Category selected"),
+                          ),
+                        );
                         setState(() {
-                          tasktype = TaskType.calendar;
+                          taskType = TaskType.calendar;
                         });
                       },
-                      child: Image.asset("lib/assets/Category2.png"),
+                      child: Image.asset("lib/assets/images/category_2.png"),
                     ),
                     GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                duration: Duration(milliseconds: 3000),
-                                content: Text("Category Seelcted")));
+                          const SnackBar(
+                            duration: Duration(milliseconds: 300),
+                            content: Text("Category selected"),
+                          ),
+                        );
                         setState(() {
-                          tasktype = TaskType.contest;
+                          taskType = TaskType.contest;
                         });
                       },
-                      child: Image.asset("lib/assets/Category3.png"),
-                    ),
+                      child: Image.asset("lib/assets/images/category_3.png"),
+                    )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   children: [
                     Expanded(
@@ -129,9 +142,11 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                             child: TextField(
                               controller: dateController,
                               decoration: const InputDecoration(
-                                  filled: true, fillColor: Colors.white),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -146,14 +161,17 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               decoration: const InputDecoration(
                                   filled: true, fillColor: Colors.white),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              const Text("Notes"),
+              const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text("Description"),
+              ),
               SizedBox(
                 height: 300,
                 child: TextField(
@@ -161,19 +179,21 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   expands: true,
                   maxLines: null,
                   decoration: const InputDecoration(
-                      filled: true, fillColor: Colors.white),
+                      filled: true, fillColor: Colors.white, isDense: true),
                 ),
               ),
               ElevatedButton(
                   onPressed: () {
                     Task newtask = Task(
-                        type: tasktype,
-                        title: titleController.text,
-                        description: descriptionController.text,
-                        isCompleted: false);
+                      type: taskType,
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      isCompleted: false,
+                    );
                     widget.addNewTask(newtask);
+                    Navigator.pop(context);
                   },
-                  child: const Text("Save")),
+                  child: const Text("Save"))
             ],
           ),
         ),

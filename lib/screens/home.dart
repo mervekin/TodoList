@@ -34,7 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void addNewTask(Task newTask) {
-    todo.add(newTask);
+    setState(() {
+      todo.add(newTask);
+    });
   }
 
   List<Task> completed = [
@@ -64,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: const BoxDecoration(
                   color: Colors.purple,
                   image: DecorationImage(
-                      image: AssetImage("lib/assets/images/Header.png"),
+                      image: AssetImage("lib/assets/images/header.png"),
                       fit: BoxFit.cover),
                 ),
                 child: Column(

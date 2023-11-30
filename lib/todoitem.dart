@@ -25,10 +25,10 @@ class _TodoItemState extends State<TodoItem> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             widget.task.type == TaskType.note
-                ? Image.asset("lib/assets/Category.png")
+                ? Image.asset("lib/assets/images/category_1.png")
                 : widget.task.type == TaskType.contest
-                    ? Image.asset("lib/assets/Category2.png")
-                    : Image.asset("lib/assets/Category2.png"),
+                    ? Image.asset("lib/assets/images/category_2.png")
+                    : Image.asset("lib/assets/images/category_3.png"),
             Expanded(
               child: Column(
                 children: [

@@ -11,7 +11,7 @@ class HeaderItem extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.purple,
         image: DecorationImage(
-            image: AssetImage("lib/assets/images/Header.png"),
+            image: AssetImage("lib/assets/images/header.png"),
             fit: BoxFit.cover),
       ),
       child: Column(
